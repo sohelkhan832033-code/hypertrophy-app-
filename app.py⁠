@@ -1,0 +1,15 @@
+import streamlit as st
+from google import genai
+
+st.set_page_config(page_title="Hypertrophy Generator")
+st.title("Advanced Hypertrophy Protocol Generator")
+
+target = st.selectbox("Lagging Muscle:", ["Rear Deltoids", "Long Head Biceps", "Vastus Lateralis", "Hamstrings"])
+equipment = st.text_input("Available Equipment:", "E.g., Dumbbells, Panatta machines...")
+
+system_prompt = f"Act as an elite strength coach. Generate a 4-week hypertrophy protocol for the {target} using {equipment}. Include 3-4 isolation exercises, sets, reps, eccentric tempos, and rest periods. Enforce strict ISSA guidelines to optimize metabolic pathways."
+
+if st.button("Generate Protocol"):
+    client = genai.Client()
+    response = client.models.generate_content(model='gemini-2.5-flash', contents=system_prompt)
+    st.markdown(response.text)
